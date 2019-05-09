@@ -16,7 +16,7 @@ from .general_functions import (
                                redshift_selection,
                                )
 from .path_definitons import (
-                               filters_goodsn,
+                               filters_address,
                                catalog_file_address,
                                output_dir,
                                )
@@ -24,20 +24,20 @@ from .path_definitons import (
 import numpy as np
 
 # Reading filter's list from our file
-goodsn_filt_list_ = np.loadtxt(filters_goodsn + "filters_list.txt", dtype="str")
-a = list(goodsn_filt_list_)
-a.append(goodsn_filt_list_[0])
-goodsn_filt_list_ = a[1:]
 
-goodsn_filt_list = [ filters_goodsn + i for i in goodsn_filt_list_]
+_filt_list_ = np.loadtxt(filters_ + "filters_list.txt", dtype="str")
+
+_filt_list = [ filters_ + i for i in _filt_list_]
 
 # Loading the Catalog
 photometry_catalogs = dd.io.load(catalog_file_address)
 
+# Which catalog: 
+catalog = "cosmos"
+
 
 # CPU count
 count_available_cpu = available_cpu_count()
-catalog = "goodsn"
 IDs = photometry_catalogs[catalog]["00_ID"]
 redshifts = photometry_catalogs[catalog]["z_Best"]
 
@@ -82,24 +82,34 @@ fit_instructions["dust"] = dust
 
 
 ################################################################################
-############################ Function to load goodss ###########################
+############################ Function to load catalogs ###########################
 ################################################################################
 # this is required for the bagpipes- take ID and find photometry, and errors
-def load_goodsn(ID):
+
+def load_catalog(ID):
     import numpy as np
     import re
     # This is for reading the catalog from a dictionary of CANDELS photometry
-    goodsn_cat = photometry_catalogs["goodsn"]
-    list_of_keys = list(photometry_catalogs["goodsn"].keys())
+    list_of_keys = list(photometry_catalogs[catalog].keys())
     list_of_keys.sort()
 
     # Doing  some string manipulation
-    rrr = re.compile(".*FLUX")
-    new_list = list(filter(rrr.match, list_of_keys))
+    if catalog=="goodsn":
+        rrr = re.compile(".*FLUX")
+        new_list = list(filter(rrr.match, list_of_keys))
+        # Bands and their corresponding errors
+        bands_list = list(new_list[:18])
+        bands_err_list = list(new_list[18:])
+    
+    elif catalog=="cosmos":
+        # Doing  some string manipulation
+        rrr = re.compile(".*FLUX")
+        new_list = list(filter(rrr.match, list_of_keys))
+        # Bands and their corresponding errors
+        bands_list = list(new_list[::2])
+        bands_err_list = list(new_list[1::2])
 
-    # Bands and their corresponding errors
-    bands_list = list(new_list[:18])
-    bands_err_list = list(new_list[18:])
+
 
     # Finding the row to read
     row = int(float(ID))-1
@@ -109,8 +119,8 @@ def load_goodsn(ID):
     # going through all of the bands for each ID and assign photometry and it's
     # errors to it
     for band, band_err in zip(bands_list, bands_err_list):
-        fluxes.append(photometry_catalogs["goodsn"][band][int(row)])
-        fluxerrs.append(photometry_catalogs["goodsn"][band_err][int(row)])
+        fluxes.append(photometry_catalogs[catalog][band][int(row)])
+        fluxerrs.append(photometry_catalogs[catalog][band_err][int(row)])
 
     # Putting the photometry and it's errors in a 2D numpy array. Format wanted
     #  by the bagpipes
@@ -118,7 +128,8 @@ def load_goodsn(ID):
 
     # blow up the errors associated with any missing fluxes.
     for i in range(len(photometry)):
-        if (photometry[i, 0] == 0.) or (photometry[i, 1] <= 0):
+        if (photometry[i, 0] <= 0.) or (photometry[i, 1] <= 0):
+#             print(photometry[i])
             photometry[i,:] = [0., 9.9*10**99.]
 
     # Enforce a maximum SNR of 20, or 10 in the IRAC channels.
@@ -133,6 +144,7 @@ def load_goodsn(ID):
             photometry[i, 1] = photometry[i, 0]/max_snr
 
     return photometry #, info
+
 
 
 # Procedures to save more complicated results into a separate file

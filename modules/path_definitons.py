@@ -7,7 +7,7 @@ main_dir = "/home/abtin/playground/dev/files_cluster/bagpipe_cluster/"
 
 # where is the list of filters
 # Filters' directory
-filters_goodsn = main_dir + "data/filters/goodsn/"
+filters_address = main_dir + "data/filters/cosmos/"
 # Catalogs_dir
 catalog_file_address = main_dir + "/data/CANDELS_ordered.hdf5"
 # Output directory
