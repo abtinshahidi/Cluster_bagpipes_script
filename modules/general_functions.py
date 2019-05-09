@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 __author__ = "Abtin Shahidi"
-__copyright__ = "Copyright 2019, Finding physical properties using Bagpipes"
+__copyright__ = "Copyright 2019, General useful fumctions"
 __credits__ = ["Abtin Shahidi"]
 # __license__ = "GPL"
 __version__ = "0.0.1"

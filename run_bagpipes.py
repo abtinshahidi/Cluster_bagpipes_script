@@ -12,16 +12,17 @@ __status__ = "Production"
 
 
 # importing bagpipes
-import bagpipes as pipes 
+import bagpipes as pipes
 
 
 # Importing needed functions
+from path_definitons import catalog
 from modules.needed_functions import (
                                       list_of_arrays_ID,
                                       list_of_redshifts,
                                       fit_instructions,
-                                      load_goodsn,
-                                      goodsn_filt_list,
+                                      load_catalog,
+                                      _filt_list,
                                       count_available_cpu,
                                       )
 
@@ -30,10 +31,10 @@ def main(i):
     print("Core {} has been stated".format(i))
     IDs = list_of_arrays_ID[i]
     redshifts = list_of_redshifts[i]
-    fit_cat = pipes.fit_catalogue(IDs, fit_instructions, load_goodsn,
+    fit_cat = pipes.fit_catalogue(IDs, fit_instructions, load_catalog,
                                   spectrum_exists = False, redshifts = redshifts
-                                  , cat_filt_list = goodsn_filt_list,
-                                  run = "GOODSN")
+                                  , cat_filt_list = _filt_list,
+                                  run = catalog)
 
     fit_cat.fit(verbose=False)
 

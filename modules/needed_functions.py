@@ -19,6 +19,7 @@ from .path_definitons import (
                                filters_address,
                                catalog_file_address,
                                output_dir,
+                               catalog,
                                )
 
 import numpy as np
@@ -29,10 +30,6 @@ _filt_list_ = np.loadtxt(filters_ + "filters_list.txt", dtype="str")
 
 _filt_list = [ filters_ + i for i in _filt_list_]
 
-
-
-# Which catalog: 
-catalog = "cosmos"
 
 
 if catalog == "egs":
@@ -107,7 +104,7 @@ def load_catalog(ID):
         # Bands and their corresponding errors
         bands_list = list(new_list[:18])
         bands_err_list = list(new_list[18:])
-    
+
     elif catalog=="cosmos":
         # Doing  some string manipulation
         rrr = re.compile(".*FLUX")
@@ -123,7 +120,7 @@ def load_catalog(ID):
         new_list = list(filter(rrr.match, list_of_keys))
         # Bands and their corresponding errors
         bands_list = list(new_list[::2])
-        bands_err_list = list(new_list[1::2])    
+        bands_err_list = list(new_list[1::2])
 
     elif catalog=="egs":
         # Doing  some string manipulation
@@ -132,7 +129,7 @@ def load_catalog(ID):
         # Bands and their corresponding errors
         bands_list = list(new_list[::2])[:23]
         bands_err_list = list(new_list[1::2])[:23]
-        
+
     # Finding the row to read
     row = int(float(ID))-1
     fluxes = []
