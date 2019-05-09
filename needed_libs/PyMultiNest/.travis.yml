@@ -1,0 +1,120 @@
+language: python
+
+os:
+  - linux
+# sadly travis does not support python on osx
+#  - osx
+
+#matrix:
+#  allow_failures:
+#    - os: osx
+
+python:
+  - "2.7"
+  - "3.6"
+
+compiler:
+  - gcc
+
+env:
+  - MULTINEST_TAG=v3.10 WITHMPI=mpich
+  - MULTINEST_TAG=v3.10 WITHMPI=openmpi
+  - MULTINEST_TAG=v3.10 WITHMPI=no
+
+#before_install:
+#  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then 
+#       brew install gcc49 lapack blas
+#    fi
+
+install:
+  # Fetch and install conda
+  # -----------------------
+#  - if [ "$TRAVIS_OS_NAME" = "osx" ] && [ "$CC" = "gcc" ]; then export CC=gcc-4.8; fi
+  - sudo apt-get install -qq libblas{3,-dev} liblapack{3,-dev} libatlas{3-base,-dev} cmake build-essential git gfortran 
+  - if [[ "$WITHMPI" == "openmpi" ]]; then 
+      sudo apt-get install -qq openmpi-bin libopenmpi-dev python-mpi4py;
+      update-alternatives --list mpi|grep "$WITHMPI" | xargs -rt sudo update-alternatives --set mpi;
+      update-alternatives --list mpirun|grep "$WITHMPI" | xargs -rt sudo update-alternatives --set mpirun;
+    fi
+  - if [[ "$WITHMPI" == "mpich" ]]; then 
+      sudo apt-get install -qq mpich libmpich-dev python-mpi4py;
+      update-alternatives --list mpi|grep "$WITHMPI" | xargs -rt sudo update-alternatives --set mpi;
+      update-alternatives --list mpirun|grep "$WITHMPI" | xargs -rt sudo update-alternatives --set mpirun;
+    fi
+  - export CONDA_BASE="http://repo.continuum.io/miniconda/Miniconda"
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then 
+      if [[ "${TRAVIS_PYTHON_VERSION}" == 2* ]]; then
+        wget ${CONDA_BASE}2-latest-MacOSX-x86_64.sh -O miniconda.sh;
+      else
+        wget ${CONDA_BASE}3-latest-MacOSX-x86_64.sh -O miniconda.sh;
+      fi
+    else
+      if [[ "${TRAVIS_PYTHON_VERSION}" == 2* ]]; then
+        wget ${CONDA_BASE}2-latest-Linux-x86_64.sh -O miniconda.sh;
+      else
+        wget ${CONDA_BASE}3-latest-Linux-x86_64.sh -O miniconda.sh;
+      fi
+    fi
+  - bash miniconda.sh -b -p ${HOME}/miniconda
+  - export PATH="${HOME}/miniconda/bin:${PATH}"
+  - hash -r
+
+  # Create the testing environment
+  # ------------------------------
+  - conda config --set always_yes yes
+  - conda config --set changeps1 no
+  - conda config --set show_channel_urls true
+  - conda config --add channels conda-forge
+  - conda update --quiet conda
+  - ENV_NAME="test-environment"
+  - conda create --quiet -n ${ENV_NAME} python=${TRAVIS_PYTHON_VERSION}
+  - source activate ${ENV_NAME}
+
+  # Customise the testing environment
+  # ---------------------------------
+  - conda install --quiet --file conda-requirements.txt
+  - pip install --user coveralls
+
+  # Summerise environment
+  # ---------------------
+  - conda list
+  - conda info -a
+  - if [[ "$WITHMPI" != "no" ]]; then 
+      pip install --user mpi4py;
+    fi
+  
+  # Install and test
+  - git clone --branch ${MULTINEST_TAG} https://github.com/JohannesBuchner/MultiNest
+  - mkdir -p MultiNest/build; pushd MultiNest/build; cmake .. && make && popd
+  - test -e MultiNest/lib/libmultinest.so
+  - python setup.py install --user
+  - python -c 'import pymultinest'|grep 'LD_LIBRARY_PATH'
+
+  - git clone https://github.com/JohannesBuchner/cuba
+  - pushd cuba && ./configure && ./makesharedlib.sh && popd
+  - export LD_LIBRARY_PATH=MultiNest/lib/:cuba/:${LD_LIBRARY_PATH} 
+  - 'echo "backend: Agg" > matplotlibrc'
+
+script:
+  - python -c 'import pymultinest'
+  - python -c 'import pycuba'
+  - if [[ "$WITHMPI" == "no" ]]; then coverage run setup.py test; fi
+  - rm -rf chains/
+  - if [[ "$WITHMPI" == "no" ]]; then 
+      python pymultinest_demo_minimal.py;
+    else
+      python -c 'import mpi4py' &&
+      mpiexec -np 4 python pymultinest_demo_minimal.py;
+    fi
+  - if [[ "$WITHMPI" == "no" ]]; then 
+      python pymultinest_demo.py;
+    else
+      python -c 'import mpi4py' &&
+      mpiexec -np 4 python pymultinest_demo.py;
+    fi
+  - python multinest_marginals.py chains/3-
+  - python pycuba_demo.py
+
+after_success: coveralls
+
+
