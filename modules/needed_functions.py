@@ -29,11 +29,18 @@ _filt_list_ = np.loadtxt(filters_ + "filters_list.txt", dtype="str")
 
 _filt_list = [ filters_ + i for i in _filt_list_]
 
-# Loading the Catalog
-photometry_catalogs = dd.io.load(catalog_file_address)
+
 
 # Which catalog: 
 catalog = "cosmos"
+
+
+if catalog == "egs":
+    _filt_list = _filt_list[:23]
+
+
+# Loading the Catalog
+photometry_catalogs = dd.io.load(catalog_file_address)
 
 
 # CPU count
@@ -110,7 +117,22 @@ def load_catalog(ID):
         bands_err_list = list(new_list[1::2])
 
 
+    elif catalog=="uds":
+        # Doing  some string manipulation
+        rrr = re.compile(".*Flux")
+        new_list = list(filter(rrr.match, list_of_keys))
+        # Bands and their corresponding errors
+        bands_list = list(new_list[::2])
+        bands_err_list = list(new_list[1::2])    
 
+    elif catalog=="egs":
+        # Doing  some string manipulation
+        rrr = re.compile(".*FLUX")
+        new_list = list(filter(rrr.match, list_of_keys))
+        # Bands and their corresponding errors
+        bands_list = list(new_list[::2])[:23]
+        bands_err_list = list(new_list[1::2])[:23]
+        
     # Finding the row to read
     row = int(float(ID))-1
     fluxes = []
