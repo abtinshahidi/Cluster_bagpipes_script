@@ -16,7 +16,7 @@ import bagpipes as pipes
 
 
 # Importing needed functions
-from path_definitons import catalog
+from modules.path_definitons import catalog
 from modules.needed_functions import (
                                       list_of_arrays_ID,
                                       list_of_redshifts,
