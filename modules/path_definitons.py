@@ -1,8 +1,9 @@
+
 ################################################################################
 ############################ I/O config ########################################
 ################################################################################
 
-main_dir = "/home/abtin/playground/dev/files_cluster/bagpipe_cluster/"
+main_dir = "/home/abtinshahidi/trial/random_string_generator/Cluster_bagpipes_script/"
 
 # catalogs = ["goodss", "goodsn", "cosmos", "uds", "egs"]
 
@@ -19,12 +20,12 @@ catalog_file_address = main_dir + "/data/CANDELS_ordered.hdf5"
 
 # Doing extra calculations! need further inquiry! DOES NOT INTERFERE WITH THE DEFAULT OUTPUT
 # Output directory
-import os
-output_dir = main_dir + "/FULL_CAT_RUN/"
+#import os
+output_dir = main_dir + "FULL_CAT_RUN/"
 
-if os.path.isdir(output_dir) == False:
-    try:
-        os.mkdir(output_dir)
-    except:
-        print("Couldn't make output directory!")
-        raise ValueError
+#if os.path.isdir(output_dir) == False:
+#    try:
+#        os.mkdir(output_dir)
+#    except:
+#        print("Couldn't make output directory!")
+#        raise ValueError

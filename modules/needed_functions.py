@@ -1,3 +1,4 @@
+
 ################################################################################
 ############################ libraries #########################################
 ################################################################################
@@ -26,9 +27,9 @@ import numpy as np
 
 # Reading filter's list from our file
 
-_filt_list_ = np.loadtxt(filters_ + "filters_list.txt", dtype="str")
+_filt_list_ = np.loadtxt(filters_address + "filters_list.txt", dtype="str")
 
-_filt_list = [ filters_ + i for i in _filt_list_]
+_filt_list = [ filters_address + i for i in _filt_list_]
 
 
 
