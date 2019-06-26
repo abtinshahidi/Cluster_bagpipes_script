@@ -3,7 +3,7 @@
 ############################ I/O config ########################################
 ################################################################################
 
-main_dir = "/home/abtinshahidi/trial/random_string_generator/Cluster_bagpipes_script/"
+main_dir = "/home/abtinshahidi/Cluster_bagpipes_script/"
 
 # catalogs = ["goodss", "goodsn", "cosmos", "uds", "egs"]
 
@@ -13,9 +13,9 @@ catalog = "cosmos"
 
 # where is the list of filters
 # Filters' directory
-filters_address = main_dir + "data/filters/" + catalog + "/"
+filters_address = main_dir + "data1/CANDELS/data/filters/" + catalog + "/"
 # Catalogs_dir
-catalog_file_address = main_dir + "/data/CANDELS_ordered.hdf5"
+catalog_file_address = main_dir + "data1/CANDELS/data/CANDELS_ordered.hdf5"
 
 
 # Doing extra calculations! need further inquiry! DOES NOT INTERFERE WITH THE DEFAULT OUTPUT

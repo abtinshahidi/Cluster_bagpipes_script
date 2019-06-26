@@ -27,7 +27,11 @@ import numpy as np
 
 # Reading filter's list from our file
 
-_filt_list_ = np.loadtxt(filters_address + "filters_list.txt", dtype="str")
+# _filt_list_ = np.loadtxt(filters_address + "filters_list.txt", dtype="str")
+with open(filters_address + "filters_list.txt", "r") as f:
+    di = f.readlines()
+
+_filt_list_ = [d[:-1] for d in di]
 
 _filt_list = [ filters_address + i for i in _filt_list_]
 
@@ -69,22 +73,37 @@ list_of_redshifts = devide_arrays(redshifts, count_available_cpu)
 
 # Assuming exponentially declining SFH and defining the dynamic range of their
 # parameters.
-exp = {}
-exp["age"] = (0.01, 13.)
-exp["tau"] = (0.005, 10.)
-exp["massformed"] = (1., 15.)
-exp["metallicity"] = (0., 2.5)
+# exp = {}
+# exp["age"] = (0.01, 13.)
+# exp["tau"] = (0.005, 10.)
+# exp["massformed"] = (1., 15.)
+# exp["metallicity"] = (0., 2.5)
+
+
+constant = {}                  # tophat function
+constant["age_max"] = 1.5      # Time since SF switched on: Gyr
+constant["age_min"] = 3.0      # Time since SF switched off: Gyr
+constant["massformed"] = (1., 15.)
+constant["metallicity"] = (0., 2.5)
+
+
+
 
 # Assuming Calzetti dust extinction law
 dust = {}
 dust["type"] = "Calzetti"
 dust["Av"] = (0., 2.)
 
+nebular = {}
+nebular["logU"] = -3.
+
+
 fit_instructions = {}
 # fit_instructions["redshift"] = (0.01, 10)
-fit_instructions["exponential"] = exp
+# fit_instructions["exponential"] = exp
+fit_instructions["constant"] = constant
 fit_instructions["dust"] = dust
-
+fit_instructions["nebular"] = nebular
 
 ################################################################################
 ############################ Function to load catalogs ###########################
