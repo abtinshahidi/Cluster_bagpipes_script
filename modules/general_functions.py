@@ -1,26 +1,28 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 __author__ = "Abtin Shahidi"
 __copyright__ = "Copyright 2019, General useful fumctions"
 __credits__ = ["Abtin Shahidi"]
 # __license__ = "GPL"
-__version__ = "0.0.1"
+__version__ = "0.1.0"
 __maintainer__ = "Abtin Shahidi"
 __email__ = "abtin.shahidi@email.ucr.edu"
-__status__ = "Production"
+__status__ = "Development"
 
-def redshift_selection(ID, redshift, _range_=[3, 4.5]):
+def selection(ID, redshift, mass, redshift_range=[3, 4.5], mass_range=[10, 14.5]):
     import numpy as np
-    assert len(ID) == len(redshift)
+    assert (len(ID) == len(redshift)) * (len(ID) == len(mass))
     final_ID = []
     final_z = []
+    final_m = []
 
-    for idi, z in zip(ID, redshift):
-        if z>_range_[0] and z<_range_[1]:
-            final_ID.append(idi)
-            final_z.append(z)
-    return np.array(final_ID), np.array(final_z)
+    for idi, z, m in zip(ID, redshift, mass):
+        if z>redshift_range[0] and z<redshift_range[1]:
+            if m>mass_range[0] and m<mass_range[1]:
+                final_ID.append(idi)
+                final_z.append(z)
+                final_m.append(m)
+    return np.array(final_ID), np.array(final_z), np.array(final_m)
 
 
 
@@ -48,9 +50,11 @@ def devide_arrays(_array_, number_of_devision):
 
 
 def available_cpu_count():
-    """ Number of available virtual or physical CPUs on this system, i.e.
+    """
+    Number of available virtual or physical CPUs on this system, i.e.
     user/real as output by time(1) when called with an optimally scaling
-    userspace-only program"""
+    userspace-only program
+    """
 
     # Needed libraries
     import os
