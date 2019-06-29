@@ -16,7 +16,10 @@ from .modules.fit_catalogs import fit_catalogs
 
 catalogs = ["goodss", "goodsn", "cosmos", "uds", "egs"]
 
-
-if __name__ == '__main__':
-    # Fit the catalogs 
+def main():
     fit_catalogs(catalogs)
+
+    
+if __name__ == '__main__':
+    # Fit the catalogs
+    main()
