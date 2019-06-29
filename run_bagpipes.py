@@ -11,7 +11,7 @@ __email__ = "abtin.shahidi@email.ucr.edu"
 __status__ = "Development"
 
 # Import the function to devide
-from .modules.fit_catalogs import fit_catalogs
+from modules.fit_catalogs import fit_catalogs
 
 
 catalogs = ["goodss", "goodsn", "cosmos", "uds", "egs"]
@@ -19,7 +19,7 @@ catalogs = ["goodss", "goodsn", "cosmos", "uds", "egs"]
 def main():
     fit_catalogs(catalogs)
 
-    
+
 if __name__ == '__main__':
     # Fit the catalogs
-    main()
+    fit_catalogs(catalogs)
