@@ -45,19 +45,21 @@ def create_obs_galaxies(IDs, **kwargs):
 
 def fit_various_models(galaxy, redshift, fit_instructions_dict, catalog):
     """
-    This is the function to fit different models to the galaxy object.
-    It will create the following directories:
+    This is the  function  to  fit  different models to the
+    galaxy object. It will create the following directories:
 
       results_dir/
                  catalog/
                          results/
 
-    And for every run (model) a different directory will be made to store the results
+    And for every run (model) a different directory will be
+    made to store the results.
 
     FUNCTION:
     =========
-              It will save a .h5 file with all the SED fitting results information
-             for every galaxy and they are as follows (for more info look at Bagpipes):
+              It will save a .h5 file with all the SED fitting results
+              information for every galaxy and they are as follows:
+               (for more info look at Bagpipes)
 
             fit.posterior.get_basic_quantities()
             fit.posterior.get_advanced_quantities()
@@ -75,7 +77,8 @@ def fit_various_models(galaxy, redshift, fit_instructions_dict, catalog):
     ======
             galaxy (Galaxy obj) : galaxy obj from bagpipes
             redshift (float): redshift of the Galaxy
-            fit_instructions_dict (dict): A dictionary of {run (model) : fit_instructions}
+            fit_instructions_dict (dict): A dictionary of --->
+                                          {run (model) : fit_instructions}
             catalog (string) : catalog string like GOODSS, GOODSN, UDS, ...
 
     OUTPUT
@@ -107,11 +110,12 @@ def fit_various_models(galaxy, redshift, fit_instructions_dict, catalog):
 #         print(run)
 
     for run, fit_info in fit_instructions_dict.items():
+        run = run + "_" + catalog
         try:
             fit_info["redshift"] = redshift
             fit = pipes.fit(galaxy=galaxy,
                             fit_instructions=fit_info,
-                            run = run)
+                            run =run)
             fit.fit(verbose=False)
 
             fit.posterior.get_basic_quantities()
@@ -123,7 +127,12 @@ def fit_various_models(galaxy, redshift, fit_instructions_dict, catalog):
             results["samples"]["ages"] = fit.posterior.sfh.ages
             results["filters_list"] = galaxy.filt_list
             results["model_components"] = fit.fitted_model.model_components
-            dd.io.save(results_dir + "results/" + run + "/" + galaxy.ID + ".h5", results)
+            # Saving the results of the SED fitting with all of the main
+            # physical quantities.
+            path_to_save = results_dir + "results/" + run
+                           + "/" + galaxy.ID + ".h5"
+            if not os.path.exists(path_to_save):
+                dd.io.save(path_to_save, results)
         except:
             with open(log_error, "a") as f:
                 f.write("No fitting for " + run + "  " + fit.galaxy.ID)

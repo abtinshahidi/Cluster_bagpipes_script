@@ -83,14 +83,14 @@ def find_loading(catalog):
         fluxes = []
         fluxerrs = []
 
-        # going through all of the bands for each ID and assign photometry and it's
-        # errors to it
+        # going through all of the bands for each ID and assign photometry and
+        # it's errors to it
         for band, band_err in zip(bands_list, bands_err_list):
             fluxes.append(photometry_catalogs[catalog][band][int(row)])
             fluxerrs.append(photometry_catalogs[catalog][band_err][int(row)])
 
-        # Putting the photometry and it's errors in a 2D numpy array. Format wanted
-        #  by the bagpipes
+        # Putting the photometry and it's errors in a 2D numpy array. Format
+        # wanted by the bagpipes
         photometry = np.c_[np.array(fluxes), np.array(fluxerrs)]
 
         # blow up the errors associated with any missing fluxes.
@@ -134,7 +134,11 @@ def full_catalogs(catalogs):
         redshifts_ = photometry_catalogs[catalog]["z_Best"]
         mass_ = photometry_catalogs[catalog]["log(Mass)_med"]
 
-        IDs, redshifts, mass = selection(IDs_, redshifts_, mass_, [3, 4.5], [10.0, 15])
+        IDs, redshifts, mass = selection(IDs_,
+                                         redshifts_,
+                                         mass_,
+                                         [3, 4.5],
+                                         [10.0, 15])
 
         list_of_arrays_ID = devide_arrays(IDs, count_available_cpu)
         list_of_redshifts = devide_arrays(redshifts, count_available_cpu)

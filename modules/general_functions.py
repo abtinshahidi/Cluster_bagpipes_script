@@ -9,7 +9,9 @@ __maintainer__ = "Abtin Shahidi"
 __email__ = "abtin.shahidi@email.ucr.edu"
 __status__ = "Development"
 
-def selection(ID, redshift, mass, redshift_range=[3, 4.5], mass_range=[10, 14.5]):
+def selection(ID, redshift, mass,
+              redshift_range=[3, 4.5],
+              mass_range=[10, 14.5]):
     import numpy as np
     assert (len(ID) == len(redshift)) * (len(ID) == len(mass))
     final_ID = []
@@ -29,7 +31,8 @@ def selection(ID, redshift, mass, redshift_range=[3, 4.5], mass_range=[10, 14.5]
 
 def devide_arrays(_array_, number_of_devision):
     try:
-        assert isinstance(number_of_devision, int), "Expected integer for number of divisions"
+        assert isinstance(number_of_devision, int), "Expected integer \
+                                                     for number of divisions"
         remainder = len(_array_)%number_of_devision
     except:
         raise ValueError
