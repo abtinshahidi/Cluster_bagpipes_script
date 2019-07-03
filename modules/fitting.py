@@ -129,7 +129,7 @@ def fit_various_models(galaxy, redshift, fit_instructions_dict, catalog):
             results["model_components"] = fit.fitted_model.model_components
             # Saving the results of the SED fitting with all of the main
             # physical quantities.
-            path_to_save = results_dir + "results/" + run
+            path_to_save = results_dir + "results/" + run \
                            + "/" + galaxy.ID + ".h5"
             if not os.path.exists(path_to_save):
                 dd.io.save(path_to_save, results)
