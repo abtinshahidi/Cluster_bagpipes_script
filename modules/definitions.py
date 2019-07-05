@@ -112,36 +112,6 @@ fit_instructions_const_neb["nebular"] = nebular
 
 
 
-#==========================#
-# Constant (Top-Hat) model #
-#==========================#
-# The fit instructions dictionary
-constant = {}              # tophat function between some limits
-constant["age_max"] = (0.5, 2)   # Time since the constant switched on in Gyr
-constant["age_min"] = (0.5, 2)   # Time since the constant switched off in Gyr
-
-constant["massformed"] = (1., 15.)
-constant["metallicity"] = (0., 2.5)
-
-
-#--------------------------#
-# Without nebular emission #
-#--------------------------#
-# The fit instructions dictionary
-fit_instructions_const = {}
-fit_instructions_const["constant"] = constant
-fit_instructions_const["dust"] = dust
-
-#-----------------------#
-# With nebular emission #
-#-----------------------#
-# The fit instructions dictionary
-fit_instructions_const_neb = {}
-fit_instructions_const_neb["constant"] = constant
-fit_instructions_const_neb["dust"] = dust
-fit_instructions_const_neb["nebular"] = nebular
-
-
 #========================#
 # Double power law model #
 #========================#
