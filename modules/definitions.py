@@ -76,7 +76,8 @@ fit_instructions_tau["dust"] = dust
 #-----------------------#
 # With nebular emission #
 #-----------------------#
-fit_instructions_tau_neb = fit_instructions_tau
+fit_instructions_tau_neb["exponential"] = exp
+fit_instructions_tau_neb["dust"] = dust
 fit_instructions_tau_neb["nebular"] = nebular
 
 

@@ -16,10 +16,6 @@ from modules.fit_catalogs import fit_catalogs
 
 catalogs = ["goodss", "goodsn", "cosmos", "uds", "egs"]
 
-def main():
-    fit_catalogs(catalogs)
-
-
 if __name__ == '__main__':
     # Fit the catalogs
     fit_catalogs(catalogs)
