@@ -2,7 +2,7 @@
 #title           :install_libs.bash
 #description     :This script will install all the needed libraries for the
 #                 BAGPIPES SED-fitting code on the Linux Debian 9 on the
-#                  Google cloude computing instances
+#                 Google cloude computing instances
 #author		       :Abtin Shahidi
 #date            :06/28/2019
 #version         :0.1
@@ -15,7 +15,9 @@
 
 # installing essential libraries before building python 3.7
 sudo apt-get --assume-yes install build-essential cmake checkinstall
-sudo apt-get --assume-yes install libreadline-gplv2-dev libncursesw5-dev libssl-dev     libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev
+sudo apt-get --assume-yes install libreadline-gplv2-dev libncursesw5-dev
+sudo apt-get --assume-yes install libssl-dev  libsqlite3-dev tk-dev libgdbm-dev
+sudo apt-get --assume-yes install libc6-dev libbz2-dev libffi-dev zlib1g-dev
 
 # Download and install python3.7.3 from the source file
 mkdir src
@@ -59,8 +61,11 @@ sudo ldconfig /home/abtinshahidi/src/MultiNest/lib/
 git clone https://github.com/JohannesBuchner/PyMultiNest.git
 
 cd PyMultiNest/
+# Installing
 sudo python3.7 setup.py install
 export PATH=$PATH:/home/abtinshahidi/.local/bin/
 
+# install the BAGPIPES
 sudo pip3.7 install bagpipes --user
+# Check if importing BAGPIPES was successful
 sudo python3.7 -c "import bagpipes"
