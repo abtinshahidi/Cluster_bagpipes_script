@@ -1,5 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+""" This is a module for runnning the SED-fitting on all of the CANDELS sources
+
+    This includes the following fields:
+
+        1. GOODS-South
+        2. GOODS-North
+        3. EGS
+        4. UDS
+        5. COSMOS
+
+
+    The initial configuration is in ./sources/definitions.py
+"""
+
+
+
 
 __author__ = "Abtin Shahidi"
 __copyright__ = "Copyright 2019, Finding physical properties of galaxies using Bagpipes"
