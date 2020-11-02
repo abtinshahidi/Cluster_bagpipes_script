@@ -19,7 +19,6 @@
 
 __author__ = "Abtin Shahidi"
 __copyright__ = "Finding physical properties of galaxies using Bagpipes"
-__credits__ = ["Abtin Shahidi"]
 __email__ = "abtin.shahidi-at-email.ucr.edu"
 
 # Import the function to devide
