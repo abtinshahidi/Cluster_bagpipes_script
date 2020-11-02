@@ -41,29 +41,29 @@ sudo apt-get --assume-yes install gfortran
 
 # Installing git
 sudo apt-get --assume-yes install git
-git config --global user.name "abtin@VM"
-git config --global user.email "abtinshahidi@gmail.com"
+git config --global user.name "user@VM"
+git config --global user.email "user@user.user"
 
 
-# Download and install MultiNest
-cd /home/abtinshahidi/src/
+# Download and install MultiNest, point to the directory
+cd /home/user/src/
 git clone https://github.com/JohannesBuchner/MultiNest.git
 cd MultiNest/build/
 cmake .. && make
 
-export LD_LIBRARY_PATH=/home/abtinshahidi/src/MultiNest
+export LD_LIBRARY_PATH=/home/user/src/MultiNest
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
-export LD_LIBRARY_PATH=/home/abtinshahidi/src/MultiNest/lib/:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/home/user/src/MultiNest/lib/:$LD_LIBRARY_PATH
 
 
-sudo ldconfig /home/abtinshahidi/src/MultiNest/lib/
+sudo ldconfig /home/user/src/MultiNest/lib/
 # Download and install PyMultiNest
 git clone https://github.com/JohannesBuchner/PyMultiNest.git
 
 cd PyMultiNest/
 # Installing
 sudo python3.7 setup.py install
-export PATH=$PATH:/home/abtinshahidi/.local/bin/
+export PATH=$PATH:/home/user/.local/bin/
 
 # install the BAGPIPES
 sudo pip3.7 install bagpipes --user
